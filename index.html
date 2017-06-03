@@ -439,8 +439,11 @@ function listenSocket() {
 			fire();
 		}
 	});
-	socket.on('switch_weapon'+magicPN, function(msg){
+	socket.on('switch_weapon1'+magicPN, function(msg){
 		 weaponMode = msg;
+	});
+	socket.on('switch_weapon2'+magicPN, function(msg){
+		 weaponMode2 = msg;
 	});
 	socket.on('scoreBoard'+magicPN, function(data)	{
 
