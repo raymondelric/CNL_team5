@@ -120,7 +120,7 @@ function addWebOwnSocket(socket, magic) {
 		});
 	}
 	socket.on('data' + magic, function(data){
-		SaveToDB(data, magic);
+		//SaveToDB(data, magic);
 	});
 }
 
@@ -178,11 +178,13 @@ function addMobileOwnSocket(socket, magic) {
 	socket.on('gameStart' + magic, function(msg){
 		io.emit('gameStart' + magic, msg);
 
-		if (totalPlayer > 1){
+		var index = Magics.indexOf(String(magic));
+		if (Roomplayers[Magics.indexOf(String(magic))] > 1){
 		    console.log("multiple players");
 		    setTimeout(function(){
 		        io.emit(player2uuid[index], 'p2go');
 			io.emit('players' + magic, '2');
+			io.emit('players' + magic, 'go');
 			},5000);
 		}
 
