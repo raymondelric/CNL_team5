@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-var firebaseDB = require('./firebase.js');
+//var firebaseDB = require('./firebase.js');
 
 var player1status = new Array();
 var player1uuid = new Array();
@@ -17,10 +17,11 @@ var player2status = new Array();
 var player2uuid = new Array();
 
 var Magics = new Array();
+var Roomplayers = new Array();
 
 var crypto = require('crypto');
 function random (howMany, chars) {
-	chars = chars || "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+	chars = chars || "a";//"abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
 	var rnd = crypto.randomBytes(howMany), value = new Array(howMany), len = chars.length;
 
 	for (var i = 0; i < howMany; i++) {
@@ -41,9 +42,13 @@ io.on('connection', function(socket){
 
   // first time shake hand, magic number on web
   // mobile <=> server
+        console.log('someone knock my door');
+
 	socket.once('magic', function(magic) {
 	console.log('magic = %s', String(magic));
-	if( Magics.indexOf(String(magic)) > -1 ) { // check magic number exists or not
+	var magic_id = Magics.indexOf(String(magic));
+	if( magic_id > -1 ) { // check magic number exists or not
+		Roomplayers[magic_id]++;	
 		io.emit('connectOK', 'OK');
 		socket.mobileMagic = String(magic);
 		addMobileOwnSocket(socket, String(magic));
@@ -80,6 +85,7 @@ socket.on('reqMagic', function()  {
 	console.log('random magic = %s', String(magic));
 	io.emit('getMagic', magic);
 	Magics.push(String(magic));
+	Roomplayers.push(0);
 	socket.magic = String(magic);
 	for( var i = 0 ; i < Magics.length ; i ++ )
 		console.log('magic[%d] = %s', i, Magics[i]);
@@ -169,9 +175,24 @@ function addMobileOwnSocket(socket, magic) {
 	socket.on('switch_weapon2' + magic, function(msg){
 		io.emit('switch_weapon2'+magic, msg);
 	});
+	socket.on('gameStart' + magic, function(msg){
+		io.emit('gameStart' + magic, msg);
+
+		if (totalPlayer > 1){
+		    console.log("multiple players");
+		    setTimeout(function(){
+		        io.emit(player2uuid[index], 'p2go');
+			io.emit('players' + magic, '2');
+			},5000);
+		}
+
+	});
 
 // android to server
 	socket.on('requestPlayer'+magic, function(msg){
+	
+	console.log('handling requetPlayer');
+
 	var index = Magics.indexOf(String(magic));
 		if( index > -1 ){
 			if(player1status[index] == null && player2status[index] == null && player1uuid[index] == null && player2uuid[index] == null){
@@ -184,17 +205,22 @@ function addMobileOwnSocket(socket, magic) {
 			if(!player1status[index]){
 				player1status[index] = true;
 				player1uuid[index] = msg;
+				//io.emit(player1uuid[index], '/Room/total' + Roomplayers[index]);
 				io.emit(player1uuid[index], 'player1');
+				//io.emit('totalPlayers' + magic, Roomplayers[index]);
+				console.log("player one sent, total player "+Roomplayers[index]);
 				//server to web
-				io.emit('players' + magic, '2');
+				//io.emit('players' + magic, Roomplayers[index]);
 			} else if(!player2status[index]){
 				player2status[index] = true;
 				player2uuid[index] = msg;
 				io.emit(player2uuid[index], 'player2');
-				io.emit(player1uuid[index], 'ready');
+				//io.emit(player1uuid[index], 'ready');
 				io.emit(player2uuid[index], 'ready');
 				//server to web
-				io.emit('players' + magic, 'go');
+				console.log("player two sent, total player " + Roomplayers[index]);
+				//io.emit('totalPlayers' + magic, Roomplayers[index]);
+				//io.emit('players' + magic, 'go');
 			} else{
 				io.emit(msg, 'full');
 			}
@@ -209,6 +235,12 @@ function addMobileOwnSocket(socket, magic) {
 			if(msg == player2uuid[index]){
 				player2status[index] = true;
 			}
+		}
+	});
+	socket.on('gameStart'+magic, function(msg){
+		console.log("game start!!!!");
+		var index = Magics.indexOf(String(magic));
+		if( index > -1 ){
 		}
 	});
 }
@@ -228,7 +260,7 @@ http.listen('error', function(err)  {
 
 var scoreBoard;
 
-firebaseDB.scoresRef.orderByChild("score").limitToLast(10).on("value", function(snapshot) {
+/*firebaseDB.scoresRef.orderByChild("score").limitToLast(10).on("value", function(snapshot) {
 	var count = snapshot.numChildren();
 	scoreBoard = '';
 	snapshot.forEach(function(data) {
@@ -249,4 +281,4 @@ function SaveToDB(data, magic) {
 		}
 	});
 	console.log(magic + 'save to db');
-}
+}*/
