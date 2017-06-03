@@ -27,12 +27,14 @@
 	    var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
 	    targ.appendChild (scriptNode);
 	}
-	function addGame()	{
+	function addGame(gameID)	{
 		// add xxx.js
-		addJS_Node('./SynxShooter.js', function(){
-			console.log('Listen socket!')
-			listenSocket();
-		});
+		if(gameID == 0)	{
+			addJS_Node('./SynxShooter.js', function(){
+				console.log('Listen socket!')
+				listenSocket();
+			});
+		}
 	}
 	function generateMagicNumber(skit) {
 		skit.once('getMagic', function(hash)	{
@@ -40,8 +42,8 @@
 			// magicPN = String(hash);
 			// magicText = game.add.bitmapText(game.width/2, 32, 'minecraftia', magicPN);
 			// magicText.anchor.setTo(0.5, 0.5);
-
-			addGame();
+			skit.on('gameStart' + hash, addGame(gameID));
+			
 		});
 		skit.emit('reqMagic', null);
 	}
