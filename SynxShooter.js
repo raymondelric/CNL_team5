@@ -139,7 +139,7 @@ function create() {
 	setupPlayer(false);
 	setupPlayerLives();
 	setupBullets();
-	setupBullet2();
+	setupBullets2();
 	setupRays();
 	setupRays2();
 	setupLightnings();
