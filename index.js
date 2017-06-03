@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+// require('./socket.io.js')
+// require('./SynxShooter.js')
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -33,6 +35,7 @@ app.get('/', function(req, res){
 });
 
 app.use("/assets", express.static(__dirname + '/assets'));
+app.use("/", express.static(__dirname + '/'));
 
 io.on('connection', function(socket){
 
