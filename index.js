@@ -177,6 +177,15 @@ function addMobileOwnSocket(socket, magic) {
 	});
 	socket.on('gameStart' + magic, function(msg){
 		io.emit('gameStart' + magic, msg);
+
+		if (totalPlayer > 1){
+		    console.log("multiple players");
+		    setTimeout(function(){
+		        io.emit(player2uuid[index], 'p2go');
+			io.emit('players' + magic, '2');
+			},5000);
+		}
+
 	});
 
 // android to server
@@ -198,7 +207,7 @@ function addMobileOwnSocket(socket, magic) {
 				player1uuid[index] = msg;
 				//io.emit(player1uuid[index], '/Room/total' + Roomplayers[index]);
 				io.emit(player1uuid[index], 'player1');
-				io.emit('totalPlayers' + magic, Roomplayers[index]);
+				//io.emit('totalPlayers' + magic, Roomplayers[index]);
 				console.log("player one sent, total player "+Roomplayers[index]);
 				//server to web
 				//io.emit('players' + magic, Roomplayers[index]);
@@ -209,9 +218,8 @@ function addMobileOwnSocket(socket, magic) {
 				//io.emit(player1uuid[index], 'ready');
 				io.emit(player2uuid[index], 'ready');
 				//server to web
-				//io.emit('totalPlayers' + magic, '2');
 				console.log("player two sent, total player " + Roomplayers[index]);
-				io.emit('totalPlayers' + magic, Roomplayers[index]);
+				//io.emit('totalPlayers' + magic, Roomplayers[index]);
 				//io.emit('players' + magic, 'go');
 			} else{
 				io.emit(msg, 'full');
