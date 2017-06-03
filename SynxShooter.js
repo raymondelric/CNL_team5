@@ -722,7 +722,7 @@ function killAllLigntning() {
 				light.kill();
 			}, this);
 	}
-	if(multiplePlayer && lightning2 != null){
+	if(multiplePlayer && lightnings2 != null){
 		lightnings2.forEachAlive(function (l2) {
 			l2.kill();
 		}, this);
