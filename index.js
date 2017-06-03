@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+// require('./socket.io.js')
+// require('./SynxShooter.js')
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
@@ -34,6 +36,7 @@ app.get('/', function(req, res){
 });
 
 app.use("/assets", express.static(__dirname + '/assets'));
+app.use("/", express.static(__dirname + '/'));
 
 io.on('connection', function(socket){
 
@@ -166,8 +169,11 @@ function addMobileOwnSocket(socket, magic) {
 		if(msg == 'start') io.emit('start'+magic, msg);
 		else io.emit('ultra'+magic, msg);
 	});
-	socket.on('switch_weapon' + magic, function(msg){
-		io.emit('switch_weapon'+magic, msg);
+	socket.on('switch_weapon1' + magic, function(msg){
+		io.emit('switch_weapon1'+magic, msg);
+	});
+	socket.on('switch_weapon2' + magic, function(msg){
+		io.emit('switch_weapon2'+magic, msg);
 	});
 	socket.on('gameStart' + magic, function(msg){
 		io.emit('gameStart' + magic, msg);
