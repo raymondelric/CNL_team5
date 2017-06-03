@@ -160,8 +160,11 @@ function addMobileOwnSocket(socket, magic) {
 		if(msg == 'start') io.emit('start'+magic, msg);
 		else io.emit('ultra'+magic, msg);
 	});
-	socket.on('switch_weapon' + magic, function(msg){
-		io.emit('switch_weapon'+magic, msg);
+	socket.on('switch_weapon1' + magic, function(msg){
+		io.emit('switch_weapon1'+magic, msg);
+	});
+	socket.on('switch_weapon2' + magic, function(msg){
+		io.emit('switch_weapon2'+magic, msg);
 	});
 
 // android to server
