@@ -21,7 +21,7 @@ var Roomplayers = new Array();
 
 var crypto = require('crypto');
 function random (howMany, chars) {
-	chars = chars || "a";//"abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+	chars = chars || "0123456789";
 	var rnd = crypto.randomBytes(howMany), value = new Array(howMany), len = chars.length;
 
 	for (var i = 0; i < howMany; i++) {
