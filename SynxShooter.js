@@ -139,8 +139,11 @@ function create() {
 	setupPlayer(false);
 	setupPlayerLives();
 	setupBullets();
+	setupBullet2();
 	setupRays();
+	setupRays2();
 	setupLightnings();
+	setupLightnings2();
 	setupFireRate();
 	setupRocket();
 	setupFireBalls();
