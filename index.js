@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-//var firebaseDB = require('./firebase.js');
+var firebaseDB = require('./firebase.js');
 
 var player1status = new Array();
 var player1uuid = new Array();
@@ -21,7 +21,7 @@ var Roomplayers = new Array();
 
 var crypto = require('crypto');
 function random (howMany, chars) {
-	chars = chars || "a";//"abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+	chars = chars || "0123456789";
 	var rnd = crypto.randomBytes(howMany), value = new Array(howMany), len = chars.length;
 
 	for (var i = 0; i < howMany; i++) {
@@ -120,7 +120,7 @@ function addWebOwnSocket(socket, magic) {
 		});
 	}
 	socket.on('data' + magic, function(data){
-		//SaveToDB(data, magic);
+		SaveToDB(data, magic);
 	});
 }
 
@@ -186,8 +186,26 @@ function addMobileOwnSocket(socket, magic) {
 			io.emit('players' + magic, '2');
 			io.emit('players' + magic, 'go');
 			},5000);
+		}else{
+		    setTimeout(function(){
+			io.emit('players' + magic, 'go');
+			},5000);
 		}
 
+	});
+
+//change username
+	socket.on('username1' + magic, function(msg){
+		console.log("user1 is: "+msg);
+		setTimeout(function(){
+			io.emit('username1' + magic, msg);
+		},5000);
+	});
+	socket.on('username2' + magic, function(msg){
+		console.log("user2 is: "+msg);
+		setTimeout(function(){
+			io.emit('username2' + magic, msg);
+		},5000);
 	});
 
 // android to server
@@ -262,7 +280,7 @@ http.listen('error', function(err)  {
 
 var scoreBoard;
 
-/*firebaseDB.scoresRef.orderByChild("score").limitToLast(10).on("value", function(snapshot) {
+firebaseDB.scoresRef.orderByChild("score").limitToLast(10).on("value", function(snapshot) {
 	var count = snapshot.numChildren();
 	scoreBoard = '';
 	snapshot.forEach(function(data) {
@@ -283,4 +301,4 @@ function SaveToDB(data, magic) {
 		}
 	});
 	console.log(magic + 'save to db');
-}*/
+}

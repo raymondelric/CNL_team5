@@ -75,6 +75,7 @@ var background_movement = 1;
 const MAX_LIFE = 3, MAX_FIREBALL = 3, MAX_ROCKETS = 20;
 const FIREBALL_TIME = 15, FIREBALL_RADIUS = 100;
 const ROCKET_COOLDOWN = 3000;
+var username1,username2;
 var player, lives, player2, lives2;
 var player1Die = false, player2Die = false;
 var playerSpawnUndeadTime = 3000; // in milliseconds
@@ -433,6 +434,15 @@ function listenSocket() {
 		scoreBoardText.anchor.setTo(0.5, 0.5);
 	});
 
+	socket.on('username1'+magicPN,function(msg){
+		console.log(msg);
+		username1 = msg;
+	});
+	socket.on('username2'+magicPN,function(msg){
+		console.log(msg);
+		username2 = msg;
+	});
+
 	// multi player
 	socket.on('players'+magicPN, function(msg) {
 		if(msg == '2'){
@@ -543,8 +553,8 @@ function updateText() {
 
 	// multi player
 	else{
-		scoreText.text = 'P1 score: ' + score;
-		scoreText2.text = 'P2 score: ' + score2;
+		scoreText.text = username1 + ' score: ' + score;
+		scoreText2.text = username2 + ' score: ' + score2;
 	}
 }
 
@@ -1527,7 +1537,9 @@ function gameOver() {
 		boss.kill();
 	}
 
-	var user = {name: "treetreeTest", score: parseInt(score), time: Date.now()}; // save to DB
+	//var user = {name: String(username), score: parseInt(40000), time: Date.now()}; // save to DB
+	var user = {name: String(username1), score: parseInt(score), time: Date.now()}; // save to DB
+	
 	socket.emit("data"+magicPN, user);
 }
 
@@ -1541,9 +1553,9 @@ function gameOver1() { // multiplayer gameover
 		levelupLoopRemove = true;
 		game.time.events.remove(levelup_loop);
 		if(score > score2){
-			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', 'Player1 Wins');
+			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', username1 + ' Wins');
 		}else if(score < score2){
-			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', 'Player2 Wins');
+			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', username2 + ' Wins');
 		}else{
 			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', 'Tie');
 		}
@@ -1563,9 +1575,9 @@ function gameOver2() { // multiplayer gameover
 		levelupLoopRemove = true;
 		game.time.events.remove(levelup_loop);
 		if(score > score2){
-			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', 'Player1 Wins');
+			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', username1 + ' Wins');
 		}else if(score < score2){
-			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', 'Player2 Wins');
+			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', username2 + ' Wins');
 		}else{
 			gameOverText = game.add.bitmapText(game.width/2, game.height/2, 'minecraftia', 'Tie');
 		}
