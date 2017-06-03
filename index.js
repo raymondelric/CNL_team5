@@ -230,6 +230,7 @@ function addMobileOwnSocket(socket, magic) {
 		}
 	});
 	socket.on('gameStart'+magic, function(msg){
+		console.log("game start!!!!");
 		var index = Magics.indexOf(String(magic));
 		if( index > -1 ){
 		}
