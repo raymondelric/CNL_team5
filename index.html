@@ -39,7 +39,7 @@
 	function generateMagicNumber(skit) {
 		skit.once('getMagic', function(hash)	{
 			console.log(hash);
-			// magicPN = String(hash);
+			magicPN = String(hash);
 			// magicText = game.add.bitmapText(game.width/2, 32, 'minecraftia', magicPN);
 			// magicText.anchor.setTo(0.5, 0.5);
 			skit.on('gameStart' + hash, addGame);
