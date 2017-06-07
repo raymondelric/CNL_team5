@@ -82,12 +82,12 @@ var game = new Phaser.Game(window.innerWidth, window.innerHeight , Phaser.AUTO, 
 
 function preload () {
 
-    game.load.atlas('tank', 'assets/tanks.png', 'assets/tanks.json');
-    game.load.atlas('enemy', 'assets/enemy-tanks.png', 'assets/tanks.json');
-    game.load.image('logo', 'assets/logo.png');
-    game.load.image('bullet', 'assets/bullet.png');
-    game.load.image('earth', 'assets/scorched_earth.png');
-    game.load.spritesheet('kaboom', 'assets/explosion.png', 64, 64, 23);
+    game.load.atlas('tank', 'assets1/tanks.png', 'assets1/tanks.json');
+    game.load.atlas('enemy', 'assets1/enemy-tanks.png', 'assets1/tanks.json');
+    game.load.image('logo', 'assets1/logo.png');
+    game.load.image('bullet', 'assets1/bullet.png');
+    game.load.image('earth', 'assets1/scorched_earth.png');
+    game.load.spritesheet('kaboom', 'assets1/explosion.png', 64, 64, 23);
     
 }
 
@@ -111,6 +111,9 @@ var cursors;
 var bullets;
 var fireRate = 100;
 var nextFire = 0;
+
+var newX;
+var newY;
 
 function create () {
 
@@ -408,7 +411,6 @@ function render () {
 
     // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
     game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
-    game.debug.text('Live: ' + myLive + ' / ' + myTotal, 32, 32);
 
 }
 
