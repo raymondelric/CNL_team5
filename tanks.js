@@ -212,75 +212,18 @@ function removeLogo () {
 function listenSocket() {
 
 	// single player
-	socket.on('setX'+magicPN, function(data) {
+	socket.on('setX1'+magicPN, function(data) {
 		newX = parseFloat(data);
 	});
-	socket.on('setY'+magicPN, function(data) {
+	socket.on('setY1'+magicPN, function(data) {
 		newY = parseFloat(data);
 	});
-	socket.on('ultra'+magicPN, function(data) {
-		if(player.alive)
-			launchult();
+	socket.on('start1'+magicPN, function(data) {
+        removeLogo ();
 	});
-	socket.on('start'+magicPN, function(data) {
-		state = STARTGAME;
-		if( !player.alive )	{
-			setupPlayer(false);
-			weaponLevel = 0;
-			score = 0;
-			resetPlayerLives();
-		}
-		if( gameOverText != null && gameOverText.alive )
-			gameOverText.kill();
-		if( scoreBoardText != null && scoreBoardText.alive )
-			scoreBoardText.kill();
-		resetMenu();
-		gamemusic.stop();
-		menumusic.loopFull();
+	socket.on('shoot1'+magicPN, function(data) {
+        fire();
 	});
-	socket.on('shoot'+magicPN, function(data) {
-		if(state === STARTGAME){ // start game
-			game.time.events.add(Phaser.Timer.SECOND * ULT_FILL_TIME, fillult, this);
-			levelupLoopRemove = false;
-			levelup_loop = game.time.events.loop(Phaser.Timer.SECOND * LEVELUP_TIME, difficultyUP, this);
-			state = INGAME;
-			setupFireRate();
-			gamestartMenu.kill();
-			if( scoreBoardText != null && scoreBoardText.alive )
-				scoreBoardText.kill();
-			setPlayerSpawnTimeUndead();
-			menumusic.stop();
-			gamemusic.loopFull();
-		} else{
-			fire();
-		}
-	});
-	socket.on('switch_weapon1'+magicPN, function(msg){
-		 weaponMode = msg;
-	});
-	socket.on('switch_weapon2'+magicPN, function(msg){
-		 weaponMode2 = msg;
-	});
-	socket.on('scoreBoard'+magicPN, function(data)	{
-
-		//console.log('data = ' + data);
-		if( scoreBoardText != null )	{
-			scoreBoardText.reset(game.width/2, game.height/2 + 32);
-			scoreBoardText.setText(data);
-		}else{
-			scoreBoardText = game.add.bitmapText(game.width/2, game.height/2 + 32, 'minecraftia', data);
-		}
-		scoreBoardText.anchor.setTo(0.5, 0.5);
-	});
-
-	socket.on('username1'+magicPN,function(msg){
-		console.log(msg);
-		username1 = msg;
-	});
-	socket.on('username2'+magicPN,function(msg){
-		console.log(msg);
-		username2 = msg;
-});
 }
 
 function update () {
