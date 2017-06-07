@@ -272,8 +272,8 @@ function update () {
         }
     }
 */
-    tank.angle = newX;
-    currentSpeed = newY;
+    tank.angle += newX / 24;
+    currentSpeed = 10 * newY;
 
     if (currentSpeed > 0)
     {
