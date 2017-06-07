@@ -91,9 +91,11 @@
 			function removeDUMMY()	{
 				$("canvas").remove();
 				$("div").remove();
+				$("body").css("margin", "0px");
 			}
 			var socket = io({'sync disconnect on unload': true });
 			generateMagicNumber(socket);
+			removeDUMMY()
 		</script>
 	</body>
 </html>
