@@ -221,7 +221,14 @@ function addMobileOwnSocket(socket, magic) {
 				player1uuid[index] = '';
 				player2uuid[index] = '';
 			}
-			if(msg == player1uuid[index] || msg == player2uuid[index]){ return;}
+			if(msg == player1uuid[index]){
+                io.emit(player1uuid[index], 'player1');
+                return;
+            }
+            if(msg == player2uuid[index]){
+                io.emit(player2uuid[index], 'player2');
+                return;
+            }
 			if(!player1status[index]){
 				player1status[index] = true;
 				player1uuid[index] = msg;

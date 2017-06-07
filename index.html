@@ -58,14 +58,14 @@
 				function addGame(gameID)	{
 				// add xxx.js
 				console.log("game id: "+gameID);
-				if(gameID == '1')	{
+				if(gameID == '0')	{
 					removeDUMMY()
 					addJS_Node('./SynxShooter.js', function(){
 						console.log('Listen socket!')
 						listenSocket();
 					});
 				}
-				else if(gameID == '0')	{
+				else if(gameID == '1')	{
 					removeDUMMY()
 					addJS_Node('./tanks.js', function(){
 						console.log('Listen socket!')

@@ -112,8 +112,8 @@ var bullets;
 var fireRate = 100;
 var nextFire = 0;
 
-var newX;
-var newY;
+var newX = 0;
+var newY = 0;
 
 function create () {
 
@@ -128,6 +128,7 @@ function create () {
     tank = game.add.sprite(0, 0, 'tank', 'tank1');
     tank.anchor.setTo(0.5, 0.5);
     tank.animations.add('move', ['tank1', 'tank2', 'tank3', 'tank4', 'tank5', 'tank6'], 20, true);
+    tank.angle = 0;
 
     //  This will force it to decelerate and limit its speed
     game.physics.enable(tank, Phaser.Physics.ARCADE);
@@ -213,7 +214,11 @@ function listenSocket() {
 
 	// single player
 	socket.on('setX1'+magicPN, function(data) {
-		newX = parseFloat(data);
+		newX = parseFloat(data) / 25.0;
+        if(isNaN(newX)){
+            console.log('newX is NaN!');
+            newX = 0;
+        }
 	});
 	socket.on('setY1'+magicPN, function(data) {
 		newY = parseFloat(data);
@@ -272,7 +277,9 @@ function update () {
         }
     }
 */
-    tank.angle += newX / 24;
+    //console.log('tank.angle:' + tank.angle + 'newX: ' + newX);
+    tank.angle += newX;
+    //console.log('tank.angle:' + tank.angle);
     currentSpeed = 10 * newY;
 
     if (currentSpeed > 0)
