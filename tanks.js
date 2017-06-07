@@ -411,7 +411,6 @@ function render () {
 
     // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
     game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
-    game.debug.text('Live: ' + myLive + ' / ' + myTotal, 32, 32);
 
 }
 
